@@ -3,7 +3,6 @@ use IEEE.STD_LOGIC_1164.ALL;
 use ieee.numeric_std.all;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.Shift_Row_Package.all;
-use work.Substitution_Package.all;
 
 
 
@@ -18,10 +17,12 @@ end ENC_Last_Round;
 architecture behavior of ENC_Last_Round is
 		signal substitue_out : STD_LOGIC_VECTOR (127 downto 0);
 		signal shift_out : STD_LOGIC_VECTOR (127 downto 0);
-		signal mode : STD_LOGIC;
 begin 		
-				mode <= '0';
-				substitute_all(data_in,mode,substitue_out);
+				Substitute :	entity work.Substitute_ENC(behavior)
+				port map(
+					data_in => data_in,
+					data_out => substitue_out
+					);
 				shift_rows(substitue_out,shift_out);
 				Add :	entity work.Add(behavior)
 				port map(
