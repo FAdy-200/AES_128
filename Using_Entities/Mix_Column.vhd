@@ -6,8 +6,8 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 package Mix_Column_Package is
 
-	procedure mix_columns(variable data_in : in STD_LOGIC_VECTOR (127 downto 0);
-                             variable data_out :  out STD_LOGIC_VECTOR (127 downto 0)
+	procedure mix_columns(signal data_in_t : in STD_LOGIC_VECTOR (127 downto 0);
+							  signal data_out_t :  out STD_LOGIC_VECTOR (127 downto 0)
                                     );
 	procedure xtime_2(variable element_in : in STD_LOGIC_VECTOR (7 downto 0);
 							variable element_out : out STD_LOGIC_VECTOR (7 downto 0)
@@ -20,9 +20,11 @@ end package;
 
 package body Mix_Column_Package is
 
-	procedure mix_columns(variable data_in : in STD_LOGIC_VECTOR (127 downto 0);
-                             variable data_out :  out STD_LOGIC_VECTOR (127 downto 0)
+	procedure mix_columns(signal data_in_t : in STD_LOGIC_VECTOR (127 downto 0);
+                             signal data_out_t :  out STD_LOGIC_VECTOR (127 downto 0)
                                     ) is
+					variable data_in:STD_LOGIC_VECTOR(127 downto 0):= data_in_t;
+					variable data_out: STD_LOGIC_VECTOR(127 downto 0);
 					variable temp:STD_LOGIC_VECTOR (47 downto 0);    -- to hold 4 intermediate values from xtime and two from xor
 				begin
 				 -- 127-32*I is to select column (j mod 4), is to select row 
@@ -38,7 +40,7 @@ package body Mix_Column_Package is
 							data_out(127-32*I-(J mod 4)*8 downto 128-32*I-8-(J mod 4)*8) := temp(15 downto 8) xor temp(7 downto 0);
 						end loop;
 					end loop;
-
+					data_out_t <= data_out;
 				end mix_columns;
 				
 	procedure xtime_2(variable element_in : in STD_LOGIC_VECTOR (7 downto 0);
