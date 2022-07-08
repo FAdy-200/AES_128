@@ -4,7 +4,6 @@ use ieee.numeric_std.all;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.Shift_Row_Package.all;
 use work.Mix_Column_Package.all;
-use work.Substitution_Package.all;
 
 
 
@@ -20,10 +19,12 @@ architecture behavior of ENC_Round is
 		signal substitue_out : STD_LOGIC_VECTOR (127 downto 0);
 		signal shift_out : STD_LOGIC_VECTOR (127 downto 0);
 		signal mix_out : STD_LOGIC_VECTOR (127 downto 0);
-		signal mode : STD_LOGIC;
 begin 		
-				mode <= '0';
-				substitute_all(data_in,mode,substitue_out);
+				Substitute :	entity work.Substitute_ENC(behavior)
+				port map(
+					data_in => data_in,
+					data_out => substitue_out
+					);
 				shift_rows(substitue_out,shift_out);
 				mix_columns(shift_out,mix_out);
 				Add :	entity work.Add(behavior)
