@@ -9,8 +9,8 @@ package Shift_Row_Package is
     
         
 
-        procedure shift_rows(variable data_in : in STD_LOGIC_VECTOR (127 downto 0);
-                             variable data_out :  out STD_LOGIC_VECTOR (127 downto 0)
+        procedure shift_rows(signal data_in : in STD_LOGIC_VECTOR (127 downto 0);
+                             signal data_out :  out STD_LOGIC_VECTOR (127 downto 0)
                                     );
 
 end package;
@@ -18,8 +18,8 @@ end package;
 package body Shift_Row_Package is
 
 
-        procedure shift_rows(variable data_in : in STD_LOGIC_VECTOR (127 downto 0);
-                             variable data_out :  out STD_LOGIC_VECTOR (127 downto 0)
+        procedure shift_rows(signal data_in : in STD_LOGIC_VECTOR (127 downto 0);
+                             signal data_out :  out STD_LOGIC_VECTOR (127 downto 0)
                                     ) is
 				 variable arrValue : STD_LOGIC_VECTOR (127 downto 0); -- signal of vector type
 
@@ -43,7 +43,7 @@ package body Shift_Row_Package is
                arrValue(39 downto 32) 		:= data_in(71 downto 64);
                arrValue(7 downto 0) 		:= data_in(39 downto 32);
 
-					data_out := arrValue;
+					data_out <= arrValue;
 
         end shift_rows;
 end Shift_Row_Package;

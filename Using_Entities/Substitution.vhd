@@ -11,9 +11,9 @@ package Substitution_Package is
                                     );
         
 
-        procedure substitute_all(variable data_in : in STD_LOGIC_VECTOR (127 downto 0);
+        procedure substitute_all(signal data_in_t : in STD_LOGIC_VECTOR (127 downto 0);
 											signal mode : in STD_LOGIC;
-											variable data_out :  out STD_LOGIC_VECTOR (127 downto 0)
+											signal data_out_t :  out STD_LOGIC_VECTOR (127 downto 0)
                                     );
 												
         procedure substitute_element_enc(variable element_in : in STD_LOGIC_VECTOR (7 downto 0);
@@ -38,11 +38,13 @@ package body Substitution_Package is
 			
 			
 			
-        procedure substitute_all(variable data_in : in STD_LOGIC_VECTOR (127 downto 0);
+        procedure substitute_all(signal data_in_t : in STD_LOGIC_VECTOR (127 downto 0);
 											signal mode : in STD_LOGIC;
-											variable data_out :  out STD_LOGIC_VECTOR (127 downto 0)
+											signal data_out_t :  out STD_LOGIC_VECTOR (127 downto 0)
                                     ) is
 							variable t_mode :  STD_LOGIC := mode;
+							variable data_in: STD_LOGIC_VECTOR (127 downto 0):=data_in_t;
+							variable data_out:STD_LOGIC_VECTOR (127 downto 0);
 			begin 
 				for I in 0 to 15 loop
 					if mode = '0' then
@@ -51,6 +53,7 @@ package body Substitution_Package is
 						substitute_element_dec(data_in(127-I*8 downto 128-I*8-8),data_out(127-I*8 downto 128-I*8-8));
 					end if;
 				end loop;
+				data_out_t <= data_out;
 			end substitute_all;
 		
 			
