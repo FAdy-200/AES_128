@@ -1,0 +1,58 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use ieee.numeric_std.all;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use work.Substitution_Package.ALL;
+
+package Key_Expansion_Package is
+
+	procedure expand_round(signal subkey_in : in STD_LOGIC_VECTOR (127 downto 0);
+									signal subkey_number: in integer;
+									signal subkey_out :  out STD_LOGIC_VECTOR (127 downto 0)
+                                    );
+	procedure rcon(signal index: in integer;
+							variable rcon_value: out STD_LOGIC_VECTOR(7 downto 0)
+							);
+end package;
+
+
+package body Key_Expansion_Package is
+
+	procedure expand_round(signal subkey_in : in STD_LOGIC_VECTOR (127 downto 0);
+									signal subkey_number: in integer;
+									signal subkey_out :  out STD_LOGIC_VECTOR (127 downto 0)
+                                    ) is
+				variable subkey_out_t:STD_LOGIC_VECTOR(127 downto 0);
+				variable temp1:STD_LOGIC_VECTOR (31 downto 0);
+				variable temp2:STD_LOGIC_VECTOR (31 downto 0);
+				variable temp3:STD_LOGIC_VECTOR (31 downto 0);
+				--variable ind : integer:=subkey_number;
+	begin
+			rcon(subkey_number,temp2);
+			-- rotating the needed word and saving it in temp1
+			temp1 := STD_LOGIC_VECTOR(shift_left(unsigned(subkey_in(127-3*32 downto 128- 3 * 32 - 32)),8));
+			temp1(7 downto 0) := subkey_in(127-3*32 downto 128-3*32 - 8);
+			-- substitute the shifted word and xoring the Rcon value saving it in temp3
+			substitute_key(temp1,temp3);
+			temp1:=temp3;
+			temp3:=temp1 xor temp2;
+			-- w[i][0] = temp3 xor w[i-1][0] 
+			subkey_out_t(127 downto 128 - 32) := subkey_in(127 downto 128- 32) xor temp3;
+			for J in 1 to 3 loop
+				-- w[i][j] = w[i][j-1] xor w[i-1][j]
+				subkey_out_t(127-32*J downto 128- 32*J - 32) := subkey_out_t(127-32*(J - 1) downto 128- 32*(J-1) - 32) xor subkey_in(127-32*J downto 128- 32*J - 32);
+			end loop;
+			subkey_out <= subkey_out_t;
+	end expand_round;
+	
+	
+	procedure rcon(signal index: in integer;
+							variable rcon_value: out STD_LOGIC_VECTOR (31 downto 0)) is
+	begin 
+		case index is
+			when 9 => 	rcon_value 		:= x"1B000000";
+			when 10 => 	rcon_value 		:=	x"36000000";
+			when others => rcon_value 	:= STD_LOGIC_VECTOR(shift_left(x"00800000",index));   -- getting the first 7 rcon values as they are just a 01 shifted left
+		end case;
+	end rcon;
+end Key_Expansion_Package;
