@@ -14,7 +14,7 @@ port(
 end ENC;
 
 architecture behavior of ENC is
-		signal pre_enc : STD_LOGIC_VECTOR (127 downto 0);
+		signal pre_rounds : STD_LOGIC_VECTOR (127 downto 0);
 		signal data_out_round_1 : STD_LOGIC_VECTOR(127 downto 0);
 		signal data_out_round_2 : STD_LOGIC_VECTOR(127 downto 0);
 		signal data_out_round_3 : STD_LOGIC_VECTOR(127 downto 0);
@@ -29,7 +29,7 @@ begin
 				port map(
 					data_in_1 => data_in,
 					data_in_2 => expanded_key(1407 downto 1280),
-					data_out => pre_enc
+					data_out => pre_rounds
 					);
 			Round_1 :	entity work.ENC_Round(behavior)
 				port map(
