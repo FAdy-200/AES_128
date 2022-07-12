@@ -6,9 +6,6 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 package Shift_Row_Package is
 
-    
-        
-
         procedure shift_rows(signal data_in : in STD_LOGIC_VECTOR (127 downto 0);
                              signal data_out :  out STD_LOGIC_VECTOR (127 downto 0)
                                     );
