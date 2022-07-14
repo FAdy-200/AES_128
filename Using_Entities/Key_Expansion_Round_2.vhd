@@ -14,8 +14,8 @@ port(
 end Key_Expansion_Round_2;
 
 architecture behavior of Key_Expansion_Round_2 is
-	signal subkey_number: integer;
+	signal rcon_value: STD_LOGIC_VECTOR(31 downto 0);
 begin 		
-		subkey_number <= 2;
-		expand_round(subkey_in,subkey_number,subkey_out);
+		rcon_value <= x"02000000";
+		expand_round(subkey_in,rcon_value,subkey_out);
 end behavior;
