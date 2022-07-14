@@ -31,9 +31,12 @@ package body Substitution_Package is
 											variable data_out :  out STD_LOGIC_VECTOR (31 downto 0)
 											) is
 			begin
-				for I in 0 to 3 loop
-					substitute_element_enc(data_in(31-I*8 downto 32-I*8-8),data_out(31-I*8 downto 32-I*8-8));
-				end loop;			
+--				Rotating while substituting the key
+				
+				substitute_element_enc(data_in(31 downto 24),data_out(7 downto 0));
+				substitute_element_enc(data_in(23 downto 16),data_out(31 downto 24));
+				substitute_element_enc(data_in(15 downto 8),data_out(23 downto 16));
+				substitute_element_enc(data_in(7 downto 0),data_out(15 downto 8));	
 			end substitute_key;
 			
 			
@@ -43,9 +46,10 @@ package body Substitution_Package is
 											signal data_out_t :  out STD_LOGIC_VECTOR (127 downto 0)
                                     ) is
 							variable t_mode :  STD_LOGIC := mode;
-							variable data_in: STD_LOGIC_VECTOR (127 downto 0):=data_in_t;
+							variable data_in: STD_LOGIC_VECTOR (127 downto 0);
 							variable data_out:STD_LOGIC_VECTOR (127 downto 0);
 			begin 
+				data_in := data_in_t;
 				for I in 0 to 15 loop
 					if mode = '0' then
 						substitute_element_enc(data_in(127-I*8 downto 128-I*8-8),data_out(127-I*8 downto 128-I*8-8));

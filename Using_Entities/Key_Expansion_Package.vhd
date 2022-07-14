@@ -27,14 +27,11 @@ package body Key_Expansion_Package is
 				variable temp2:STD_LOGIC_VECTOR (31 downto 0);
 				
 	begin
+			temp1 := subkey_in(31 downto 0);
 			rcon(subkey_number,temp2);
 			-- rotating the needed word and saving it in temp1
-			temp1 := STD_LOGIC_VECTOR(shift_left(unsigned(subkey_in(127-3*32 downto 128- 3 * 32 - 32)),8));
-			temp1(7 downto 0) := subkey_in(127-3*32 downto 128-3*32 - 8);
-			-- substitute the shifted word and xoring the Rcon value saving it in temp1
 			substitute_key(temp1,temp1);
-			temp1:=temp1 xor temp2;
-			-- w[i][0] = temp3 xor w[i-1][0] 
+			temp1 := temp1 xor temp2;
 			subkey_out_t(127 downto 128 - 32) := subkey_in(127 downto 128- 32) xor temp1;
 			for J in 1 to 3 loop
 				-- w[i][j] = w[i][j-1] xor w[i-1][j]
