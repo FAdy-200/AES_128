@@ -18,10 +18,6 @@ end AES;
 
 architecture main of AES is
 	signal expanded_key : STD_LOGIC_VECTOR (1407 downto 0);
-	------ temp
-	--	signal	keyt :  STD_LOGIC_VECTOR (127 downto 0):="01010100011010000110000101110100011100110010000001101101011110010010000001001011011101010110111001100111001000000100011001110101";
-	--	signal modet :  STD_LOGIC := '0';
-	------
 begin
 	process(mode)
 	begin
