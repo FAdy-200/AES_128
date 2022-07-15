@@ -3,7 +3,6 @@ use IEEE.STD_LOGIC_1164.ALL;
 use ieee.numeric_std.all;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.Shift_Row_Package.all;
-use work.Mix_Column_Package.all;
 
 
 
@@ -26,7 +25,11 @@ begin
 					data_out => substitue_out
 					);
 				shift_rows(substitue_out,shift_out);
-				mix_columns(shift_out,mix_out);
+				Mix_Columns :	entity work.Mix_Column(behavior)
+				port map(
+					data_in => shift_out,
+					data_out => mix_out
+				);	
 				Add :	entity work.Add(behavior)
 				port map(
 					data_in_1 => mix_out,
