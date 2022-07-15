@@ -27,7 +27,7 @@ package body Mix_Column_Package is
 					variable data_out: STD_LOGIC_VECTOR(127 downto 0);
 					variable temp:STD_LOGIC_VECTOR (47 downto 0);    -- to hold 4 intermediate values from xtime and two from xor
 				begin
-				 -- 127-32*I is to select column (j mod 4), is to select row 
+				 -- 127-32*I is to select column, (j mod 4) is to select row 
 				 -- j is increeased each operation to componsate for the row shift of the mix matrix
 					for I in 0 to 3 loop
 						for J in 0 to 3 loop
@@ -56,6 +56,7 @@ package body Mix_Column_Package is
 						when '1' =>
 							temp := STD_LOGIC_VECTOR(shift_left(unsigned(element_in), 1));
 							element_out := temp xor "00011011";
+						when others => null;
 					end case;
 				end xtime_2;
 				
