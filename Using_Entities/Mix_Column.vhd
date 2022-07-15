@@ -23,10 +23,11 @@ package body Mix_Column_Package is
 	procedure mix_columns(signal data_in_t : in STD_LOGIC_VECTOR (127 downto 0);
                              signal data_out_t :  out STD_LOGIC_VECTOR (127 downto 0)
                                     ) is
-					variable data_in:STD_LOGIC_VECTOR(127 downto 0):= data_in_t;
+					variable data_in:STD_LOGIC_VECTOR(127 downto 0);
 					variable data_out: STD_LOGIC_VECTOR(127 downto 0);
 					variable temp:STD_LOGIC_VECTOR (47 downto 0);    -- to hold 4 intermediate values from xtime and two from xor
 				begin
+					data_in:=data_in_t;
 				 -- 127-32*I is to select column, (j mod 4) is to select row 
 				 -- j is increeased each operation to componsate for the row shift of the mix matrix
 					for I in 0 to 3 loop
