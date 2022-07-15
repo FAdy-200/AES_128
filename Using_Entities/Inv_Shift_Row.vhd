@@ -21,7 +21,7 @@ package body Inv_Shift_Row_Package is
         procedure inv_shift_rows(signal data_in : in STD_LOGIC_VECTOR (127 downto 0);
                              signal data_out :  out STD_LOGIC_VECTOR (127 downto 0)
                                     ) is
-				 signal arrValue : STD_LOGIC_VECTOR (127 downto 0); -- variable of vector type
+				 variable arrValue : STD_LOGIC_VECTOR (127 downto 0); -- variable of vector type
 
 			begin
 

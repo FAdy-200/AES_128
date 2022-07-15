@@ -6,8 +6,8 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 package Inv_Mix_Column_Package is
 
-	procedure inv_mix_columns(variable data_in_inv_mix : in STD_LOGIC_VECTOR (127 downto 0);
-                             variable data_out_inv_mix :  out STD_LOGIC_VECTOR (127 downto 0)
+	procedure inv_mix_columns(signal data_in_inv_mix_t : in STD_LOGIC_VECTOR (127 downto 0);
+                             signal data_out_inv_mix_t :  out STD_LOGIC_VECTOR (127 downto 0)
                                     );
 	procedure xtime_2(variable element_in_xtime_2 : in STD_LOGIC_VECTOR (7 downto 0);
 							variable element_out_xtime_2 : out STD_LOGIC_VECTOR (7 downto 0)
@@ -29,11 +29,14 @@ end package;
 
 package body Inv_Mix_Column_Package is
 
-	procedure inv_mix_columns(variable data_in_inv_mix : in STD_LOGIC_VECTOR (127 downto 0);
-                             variable data_out_inv_mix :  out STD_LOGIC_VECTOR (127 downto 0)
+	procedure inv_mix_columns(signal data_in_inv_mix_t : in STD_LOGIC_VECTOR (127 downto 0);
+                             signal data_out_inv_mix_t :  out STD_LOGIC_VECTOR (127 downto 0)
                                     ) is
 					variable temp_inv_mix:STD_LOGIC_VECTOR (47 downto 0);    -- to hold 4 intermediate values from xtime and two from xor
+					variable data_in_inv_mix :  STD_LOGIC_VECTOR (127 downto 0);
+				   variable data_out_inv_mix :   STD_LOGIC_VECTOR (127 downto 0);
 				begin
+					data_in_inv_mix:=data_in_inv_mix_t;
 					-- 127-32*I is to select column, (j mod 4) is to select row 
 					-- j is increeased each operation to componsate for the row shift of the mix matrix
 					for I in 0 to 3 loop
@@ -47,6 +50,7 @@ package body Inv_Mix_Column_Package is
 							data_out_inv_mix(127-32*I-(J mod 4)*8 downto 128-32*I-8-(J mod 4)*8) := temp_inv_mix(15 downto 8) xor temp_inv_mix(7 downto 0);
 						end loop;
 					end loop;
+					data_out_inv_mix_t <= data_out_inv_mix;
 				end inv_mix_columns;
 				
 	procedure xtime_2(variable element_in_xtime_2 : in STD_LOGIC_VECTOR (7 downto 0);   -- nedded to be a variable to be used multiple times within other routines
