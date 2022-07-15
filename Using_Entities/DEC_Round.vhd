@@ -11,7 +11,7 @@ entity DEC_Round is
 port(
 		data_in :in STD_LOGIC_VECTOR (127 downto 0);
 		data_out : out STD_LOGIC_VECTOR (127 downto 0);
-		expanded_key_dec : in STD_LOGIC_VECTOR (127 downto 0)
+		expanded_key : in STD_LOGIC_VECTOR (127 downto 0)
 		);
 end DEC_Round;
 
@@ -24,7 +24,7 @@ begin
                 Add :	entity work.Add(behavior)
                 port map(
                     data_in_1 => data_in,
-                    data_in_2 => expanded_key_dec,
+                    data_in_2 => expanded_key,
                     data_out => add_out
                     ); 
                 inv_mix_columns(add_out,mix_out);		

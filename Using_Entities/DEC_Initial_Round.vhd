@@ -10,7 +10,7 @@ entity DEC_Initial_Round is
 port(
 		data_in :in STD_LOGIC_VECTOR (127 downto 0);
 		data_out : out STD_LOGIC_VECTOR (127 downto 0);
-		expanded_key_dec : in STD_LOGIC_VECTOR (127 downto 0)
+		expanded_key : in STD_LOGIC_VECTOR (127 downto 0)
 		);
 end DEC_Initial_Round;
 
@@ -21,14 +21,14 @@ begin
                 Add :	entity work.Add(behavior)
                 port map(
                     data_in_1 => data_in,
-                    data_in_2 => expanded_key_dec,
+                    data_in_2 => expanded_key,
                     data_out => add_out
                     );
                 inv_shift_rows(add_out,inv_shift_out); 		
 				Substitute :	entity work.Substitute_DEC(behavior)
 				port map(
-					data_in_dec => inv_shift_out,
-					data_out_dec => data_out
+					data_in => inv_shift_out,
+					data_out => data_out
 					);
 
 end behavior;
