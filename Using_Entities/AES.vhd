@@ -2,9 +2,6 @@ library IEEE;
 use ieee.STD_LOGIC_1164.ALL;
 use ieee.NUMERIC_STD.all;
 use ieee.STD_LOGIC_UNSIGNED.ALL;
---use work.AES_ENC_Package.all;
---use work.AES_DEC_Package.all;
---use work.Key_Expansion_Package.all;
 
 
 entity AES is
@@ -12,31 +9,58 @@ port(
 		data_in :in STD_LOGIC_VECTOR (127 downto 0);
 		data_out : out STD_LOGIC_VECTOR (127 downto 0);
 		key : in STD_LOGIC_VECTOR (127 downto 0);
-		mode : in STD_LOGIC
+		mode : in STD_LOGIC;
+		clk : in STD_LOGIC;
+		key_clk : in STD_LOGIC
 		);
 end AES;
 
 architecture main of AES is
-	shared variable expanded_key : STD_LOGIC_VECTOR (1407 downto 0);
+	signal expanded_key_reg : STD_LOGIC_VECTOR (1407 downto 0);
+	signal key_reg : STD_LOGIC_VECTOR (127 downto 0);
+	signal expanded_key : STD_LOGIC_VECTOR (1407 downto 0);
 	signal data_out_enc : STD_LOGIC_VECTOR (127 downto 0); 
+	signal data_in_reg : STD_LOGIC_VECTOR (127 downto 0); 
+	signal data_enc_reg : STD_LOGIC_VECTOR (127 downto 0); 
+	signal temp : STD_LOGIC_VECTOR (127 downto 0);
 begin
 		
-		U1 :	entity work.ENC(behavior)
+		ENC :	entity work.ENC(behavior)
 				port map(
 					data_in => data_in,
-					expanded_key => expanded_key,
+					expanded_key => expanded_key_reg,
 					data_out => data_out_enc
 					);
+		Expand :	entity work.Key_Expansion(behavior)
+				port map(
+					key => key_reg,
+					expanded_key_out => expanded_key
+					);
 					
-		--expand(key,expanded_key);
-		process(mode)
+-- 	REGISTER CREATION
+		process (key_clk)
 		begin
-		case mode is 
-			when '0' =>								-- encryption mode
-				data_out <= data_out_enc;
-			when '1' =>								-- dencryption mode 						
-				data_out <= data_in;
-				--decrypt(data_in,expanded_key,data_out);			
-		end case;
+			if rising_edge(key_clk) then 
+				key_reg <= key;
+				expanded_key_reg <= expanded_key;
+			end if;
 		end process;
+		process (clk)
+		begin
+			if rising_edge(clk) then 
+				data_in_reg<= data_in;
+				data_enc_reg <= data_out_enc;
+			end if;
+		end process;
+		
+-- 	MUX FOR OUTPUT
+		process (mode,data_enc_reg,data_in_reg)
+		begin 
+			case mode is
+				when '0' => temp <= data_enc_reg;
+				when '1' => temp <= data_in_reg;
+				when others => null;
+			end case;
+		end process;
+		data_out <= temp;
 end main;
