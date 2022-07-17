@@ -40,8 +40,8 @@ begin
 			);
 		Expand :	entity work.Key_Expansion(behavior)
 				port map(
-					key => key,
-					expanded_key_out => expanded_key_reg
+					key => key_reg,
+					expanded_key_out => expanded_key
 					);
 					
 -- 	REGISTER CREATION
