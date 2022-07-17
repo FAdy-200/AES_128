@@ -66,6 +66,7 @@ package body Inv_Mix_Column_Package is
 						when '1' =>
 							temp_xtime_2 := STD_LOGIC_VECTOR(shift_left(unsigned(element_in_xtime_2), 1));
 							element_out_xtime_2 := temp_xtime_2 xor "00011011";
+						when others => null;
 					end case;
 				end xtime_2;
 				
