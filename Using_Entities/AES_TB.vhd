@@ -11,6 +11,7 @@ architecture sim of AES_TB is
     constant clock_period    : time    := 1000 ms / clock_frequency;
  
     signal clk    : STD_LOGIC := '1';
+	 signal clk_key    : STD_LOGIC := '1';
     signal key  : STD_LOGIC_VECTOR(127 downto 0);
     signal data_in : STD_LOGIC_VECTOR(127 downto 0);
 	 signal data_out : STD_LOGIC_VECTOR(127 downto 0);
@@ -21,6 +22,7 @@ begin
 		port map(
 		  key => key,
         clk    => clk,
+		  clk_key => clk_key,
         data_in   => data_in,
         data_out => data_out,
 		  mode => mode
@@ -28,6 +30,7 @@ begin
  
     -- Process for generating the clock
     clk <= not clk after clock_period/2;
+	 clk_key <= not clk_key after (clock_period*10)/2;
     -- Testbench sequence
     process is
     begin

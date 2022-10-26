@@ -10,7 +10,8 @@ port(
 		data_out : out STD_LOGIC_VECTOR (127 downto 0);
 		key : in STD_LOGIC_VECTOR (127 downto 0);
 		mode : in STD_LOGIC;
-		clk : in STD_LOGIC
+		clk : in STD_LOGIC;
+		clk_key: in STD_LOGIC
 		);
 end AES;
 
@@ -37,7 +38,8 @@ begin
 				port map(
 					data_in => data_in_reg,
 					expanded_key => expanded_key_reg,
-					data_out => data_out_dec
+					data_out => data_out_dec,
+					clk => clk
 					);
 		Expand :	entity work.Key_Expansion(behavior)
 				port map(
@@ -52,6 +54,13 @@ begin
 				data_in_reg<= data_in;
 				data_enc_reg <= data_out_enc;
 				data_dec_reg <= data_out_dec;
+			end if;
+		end process;
+		
+-- 	REGISTER CREATION
+		process (clk_key)
+		begin
+			if rising_edge(clk_key) then 
 				key_reg <= key;
 				expanded_key_reg <= expanded_key;
 			end if;

@@ -39,8 +39,9 @@ set_time_format -unit ns -decimal_places 3
 # Create Clock
 #**************************************************************
 
-create_clock -name {clk} -period 70.000 [get_ports {clk}]
+create_clock -name {clk} -period 10.000 [get_ports {clk}]
 
+create_clock -name {clk_key} -period 50.000 [get_ports {clk_key}]
 
 #**************************************************************
 # Create Generated Clock
