@@ -30,14 +30,15 @@ begin
 				port map(
 					data_in => data_in_reg,
 					expanded_key => expanded_key_reg,
-					data_out => data_out_enc
+					data_out => data_out_enc,
+					clk => clk
 					);
 		DEC :	entity work.DEC(behavior)
-		port map(
-			data_in => data_in_reg,
-			expanded_key => expanded_key_reg,
-			data_out => data_out_dec
-			);
+				port map(
+					data_in => data_in_reg,
+					expanded_key => expanded_key_reg,
+					data_out => data_out_dec
+					);
 		Expand :	entity work.Key_Expansion(behavior)
 				port map(
 					key => key_reg,
