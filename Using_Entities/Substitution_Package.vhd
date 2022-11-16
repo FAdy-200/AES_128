@@ -11,10 +11,13 @@ package Substitution_Package is
                                     );
         
 
-        procedure substitute_all(signal data_in_t : in STD_LOGIC_VECTOR (127 downto 0);
-											signal mode : in STD_LOGIC;
+        procedure substitute_all_enc(signal data_in_t : in STD_LOGIC_VECTOR (127 downto 0);
 											signal data_out_t :  out STD_LOGIC_VECTOR (127 downto 0)
                                     );
+		  procedure substitute_all_dec(signal data_in_t : in STD_LOGIC_VECTOR (127 downto 0);
+											signal data_out_t :  out STD_LOGIC_VECTOR (127 downto 0)
+                                    );
+
 												
         procedure substitute_element_enc(variable element_in : in STD_LOGIC_VECTOR (7 downto 0);
 												variable element_out :  out STD_LOGIC_VECTOR (7 downto 0)
@@ -41,27 +44,58 @@ package body Substitution_Package is
 			
 			
 			
-        procedure substitute_all(signal data_in_t : in STD_LOGIC_VECTOR (127 downto 0);
-											signal mode : in STD_LOGIC;
+        procedure substitute_all_enc(signal data_in_t : in STD_LOGIC_VECTOR (127 downto 0);
 											signal data_out_t :  out STD_LOGIC_VECTOR (127 downto 0)
                                     ) is
-							variable t_mode :  STD_LOGIC := mode;
 							variable data_in: STD_LOGIC_VECTOR (127 downto 0);
 							variable data_out:STD_LOGIC_VECTOR (127 downto 0);
 			begin 
 				data_in := data_in_t;
-				for I in 0 to 15 loop
-					if mode = '0' then
-						substitute_element_enc(data_in(127-I*8 downto 128-I*8-8),data_out(127-I*8 downto 128-I*8-8));
-					else
-						substitute_element_dec(data_in(127-I*8 downto 128-I*8-8),data_out(127-I*8 downto 128-I*8-8));
-					end if;
-				end loop;
+					substitute_element_enc(data_in(127 downto 120),data_out(127 downto 120));
+					substitute_element_enc(data_in(95 downto 88)  ,data_out(95 downto 88));
+					substitute_element_enc(data_in(63 downto 56) ,data_out(63 downto 56));
+					substitute_element_enc(data_in(31 downto 24),data_out(31 downto 24));
+					substitute_element_enc(data_in(87 downto 80),data_out(119 downto 112));
+					substitute_element_enc(data_in(55 downto 48),data_out(87 downto 80));
+					substitute_element_enc(data_in(23 downto 16),data_out(55 downto 48));
+					substitute_element_enc(data_in(119 downto 112),data_out(23 downto 16));
+					substitute_element_enc(data_in(47 downto 40),data_out(111 downto 104));
+					substitute_element_enc(data_in(15 downto 8)	,data_out(79 downto 72));
+					substitute_element_enc(data_in(111 downto 104),data_out(47 downto 40));
+					substitute_element_enc(data_in(79 downto 72),data_out(15 downto 8));
+					substitute_element_enc(data_in(7 downto 0),data_out(103 downto 96));
+					substitute_element_enc(data_in(103 downto 96),data_out(71 downto 64));
+					substitute_element_enc(data_in(71 downto 64),data_out(39 downto 32));
+					substitute_element_enc(data_in(39 downto 32),data_out(7 downto 0));
 				data_out_t <= data_out;
-			end substitute_all;
+			end substitute_all_enc;
 		
 			
-			
+        procedure substitute_all_dec(signal data_in_t : in STD_LOGIC_VECTOR (127 downto 0);
+											signal data_out_t :  out STD_LOGIC_VECTOR (127 downto 0)
+                                    ) is
+							variable data_in: STD_LOGIC_VECTOR (127 downto 0);
+							variable data_out:STD_LOGIC_VECTOR (127 downto 0);
+			begin 
+				data_in := data_in_t;
+					substitute_element_dec(data_in(127 downto 120),data_out(127 downto 120));
+					substitute_element_dec(data_in(95 downto 88),data_out(95 downto 88));
+					substitute_element_dec(data_in(63 downto 56),data_out(63 downto 56));
+					substitute_element_dec(data_in(31 downto 24),data_out(31 downto 24));
+					substitute_element_dec(data_in(119 downto 112),data_out(87 downto 80));
+					substitute_element_dec(data_in(87 downto 80),data_out(55 downto 48));
+					substitute_element_dec(data_in(55 downto 48),data_out(23 downto 16));
+					substitute_element_dec(data_in(23 downto 16),data_out(119 downto 112));
+					substitute_element_dec(data_in(111 downto 104),data_out(47 downto 40));
+					substitute_element_dec(data_in(79 downto 72),data_out(15 downto 8));
+					substitute_element_dec(data_in(47 downto 40),data_out(111 downto 104));
+					substitute_element_dec(data_in(15 downto 8),data_out(79 downto 72));
+					substitute_element_dec(data_in(103 downto 96),data_out(7 downto 0));
+					substitute_element_dec(data_in(71 downto 64),data_out(103 downto 96));
+					substitute_element_dec(data_in(39 downto 32),data_out(71 downto 64));
+					substitute_element_dec(data_in(7 downto 0),data_out(39 downto 32));
+				data_out_t <= data_out;
+			end substitute_all_dec;
 			
 			
         procedure substitute_element_enc(variable element_in : in STD_LOGIC_VECTOR (7 downto 0);

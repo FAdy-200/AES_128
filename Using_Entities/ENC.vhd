@@ -62,7 +62,7 @@ begin
 					);
 			Round_4 :	entity work.ENC_Round(behavior)
 				port map(
-					data_in => data_out_round_3_reg,
+					data_in => data_out_round_3_Reg,
 					expanded_key => expanded_key(895 downto 768),
 					data_out => data_out_round_4
 					);

@@ -24,10 +24,9 @@ begin
                     data_in_2 => expanded_key,
                     data_out => add_out
                     );
-                inv_shift_rows(add_out,inv_shift_out); 		
 				Substitute :	entity work.Substitute_DEC(behavior)
 				port map(
-					data_in => inv_shift_out,
+					data_in => add_out,
 					data_out => data_out
 					);
 

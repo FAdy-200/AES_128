@@ -14,8 +14,6 @@ port(
 end Substitute_DEC;
 
 architecture behavior of Substitute_DEC is
-	signal mode:std_logic;
 begin 		
-		mode<='1';
-		substitute_all(data_in,mode,data_out);
+		substitute_all_dec(data_in,data_out);
 end behavior;

@@ -17,6 +17,7 @@ end DEC_Round;
 
 architecture behavior of DEC_Round is
 		signal add_out : STD_LOGIC_VECTOR (127 downto 0);
+--		signal reg : STD_LOGIC_VECTOR (127 downto 0);
 	   signal mix_out : STD_LOGIC_VECTOR (127 downto 0);
 		signal shift_out : STD_LOGIC_VECTOR (127 downto 0);
 		
@@ -32,12 +33,17 @@ begin
 					data_in => add_out,
 					data_out => mix_out
 					);	
-                inv_shift_rows(mix_out,shift_out);
 				Substitute :	entity work.Substitute_DEC(behavior)
 				port map(
-					data_in => shift_out,
+					data_in => mix_out,
 					data_out => data_out
 					);
+--		process (clk)
+--		begin
+--			if rising_edge(clk) then 
+--				reg <= mix_out;
+--			end if;
+--		end process;
 				
 				
 end behavior;

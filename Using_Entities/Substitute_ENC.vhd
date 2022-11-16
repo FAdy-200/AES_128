@@ -14,8 +14,6 @@ port(
 end Substitute_ENC;
 
 architecture behavior of Substitute_ENC is
-	signal mode:std_logic;
 begin 		
-		mode<='0';
-		substitute_all(data_in,mode,data_out);
+		substitute_all_enc(data_in,data_out);
 end behavior;

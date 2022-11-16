@@ -18,16 +18,16 @@ architecture behavior of ENC_Round is
 		signal substitue_out : STD_LOGIC_VECTOR (127 downto 0);
 		signal shift_out : STD_LOGIC_VECTOR (127 downto 0);
 		signal mix_out : STD_LOGIC_VECTOR (127 downto 0);
+--		signal reg : STD_LOGIC_VECTOR (127 downto 0);
 begin 		
 				Substitute :	entity work.Substitute_ENC(behavior)
 				port map(
 					data_in => data_in,
 					data_out => substitue_out
 					);
-				shift_rows(substitue_out,shift_out);
 				Mix_Columns :	entity work.Mix_Column(behavior)
 				port map(
-					data_in => shift_out,
+					data_in => substitue_out,
 					data_out => mix_out
 				);	
 				Add :	entity work.Add(behavior)
@@ -36,4 +36,10 @@ begin
 					data_in_2 => expanded_key,
 					data_out => data_out
 					);
+--		process (clk)
+--		begin
+--			if rising_edge(clk) then 
+--				reg <= substitue_out;
+--			end if;
+--		end process;
 end behavior;

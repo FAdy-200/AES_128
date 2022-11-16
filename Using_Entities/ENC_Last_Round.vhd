@@ -23,10 +23,9 @@ begin
 					data_in => data_in,
 					data_out => substitue_out
 					);
-				shift_rows(substitue_out,shift_out);
 				Add :	entity work.Add(behavior)
 				port map(
-					data_in_1 => shift_out,
+					data_in_1 => substitue_out,
 					data_in_2 => expanded_key,
 					data_out => data_out
 					);
